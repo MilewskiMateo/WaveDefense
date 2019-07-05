@@ -1,15 +1,14 @@
 package Threads;
 
-public class GameLoop extends Thread{
-	int i=0;
-	//nothink//
+public class GameLoop extends Thread {
+	int i = 0;
+
 	@Override
 	public void run() {
 		System.out.println("GameThread odpalam");
-		while(ThreadControlers.isGameIsRunning()){
-		i++;
-			//System.out.println("Runnning");
-	}
+		while (ThreadControlers.isGameIsRunning()) {
+			i++;
+		}
 	}
 
 }
