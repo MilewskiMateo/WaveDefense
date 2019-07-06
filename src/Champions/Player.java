@@ -22,6 +22,7 @@ public class Player {
 	private double sizeX;
 	private double sizeY;
 	private double angle;
+	private double angleImage;
 	private double firstTree;
 	private double secondTree;
 	private double thirdTree;
@@ -29,31 +30,31 @@ public class Player {
 	private double possitionY;
 	public boolean keys[] = new boolean[5];
 	public ArrayList<Bullet> lista = new ArrayList<>();
-		
 
-	public Player(GamePane Pane,ArrayList<Bullet> listOfBullets,double possitionX,double possitionY,double sizeX, double sizeY) {
+	public Player(GamePane Pane, ArrayList<Bullet> listOfBullets, double possitionX, double possitionY, double sizeX,
+			double sizeY) {
 		Arrays.fill(keys, Boolean.FALSE);
-		this.lista=listOfBullets;
-		this.mainPane=Pane;
+		this.lista = listOfBullets;
+		this.mainPane = Pane;
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
 		this.possitionX = possitionX;
 		this.possitionY = possitionY;
-		this.angle=0;
+		this.angle = 0;
 		health = 100;
+		angleImage = 0;
 		mana = 100;
 		money = 0;
 		firstTree = 0;
 		secondTree = 0;
 		thirdTree = 0;
 		makeImageView();
-		mainPane.setOnMouseMoved(e->{
-			mathAngle(e.getX(),	e.getY());
-			
-		
+		mainPane.setOnMouseMoved(e -> {
+			mathAngle(e.getX(), e.getY());
+
 		});
 	}
-	
+
 	public void makeImageView() {
 		mario = new Image("Images/Mario.png", sizeX, sizeY, false, false);
 		marioImageView = new ImageView(mario);
@@ -62,16 +63,16 @@ public class Player {
 		mainPane.getChildren().add(marioImageView);
 	}
 
-	public synchronized void  move() {
-	
-		if ( keys[1] == true) {
-	
+	public synchronized void move() {
+
+		if (keys[1] == true) {
+
 			marioImageView.setTranslateX(marioImageView.getTranslateX() - 5);
 		}
-		if ( keys[0] == true) {
+		if (keys[0] == true) {
 			marioImageView.setTranslateX(marioImageView.getTranslateX() + 5);
 		}
-	
+
 		if (keys[2] == true) {
 
 			marioImageView.setTranslateY(marioImageView.getTranslateY() - 5);
@@ -81,39 +82,37 @@ public class Player {
 		}
 		if (keys[4] == true) {
 			Platform.runLater(() -> {
-			//System.out.println("respiê w ("+ marioImageView.getTranslateX()+","+ marioImageView.getTranslateY()+")");
-			Bullet fire = new Bullet(mainPane, "Bullets/bulletImage.png", 50, 50, 5, 0,5, marioImageView.getTranslateX(), marioImageView.getTranslateY());
-			fire.addBulletToPane();
-			lista.add(fire);
-			
+				Bullet fire = new Bullet(mainPane, "Bullets/bulletImage.png", 50, 50, 5, 0, 5,
+						marioImageView.getTranslateX(), marioImageView.getTranslateY());
+				fire.addBulletToPane();
+				lista.add(fire);
+				marioImageView.getTransforms().add(Rotate.rotate(10, 50, 50));
 			});
 		}
 
 	}
-	public void mathAngle( double x ,double y) {
-		System.out.println("theta =  "+ Math.atan2(y, x));
-		//System.out.println();
-		
-		//angle = Math.tan(x/y)angle;
+
+	public void mathAngle(double xM, double yM) {
+		double x = xM - 640;
+		double y = -(yM - 360);
+
+		if (x > 0 && y > 0) {
+			angle = Math.toDegrees(Math.atan(x / y));
+		} else if (x < 0 && y > 0) {
+			angle = Math.toDegrees(Math.atan(x / y));
+		} else if (x < 0 && y < 0) {
+			angle = ((-90) + (-(90 - Math.toDegrees(Math.atan(x / y)))));
+		} else if (x > 0 && y < 0) {
+			angle = (180 + Math.toDegrees(Math.atan(x / y)));
+		}
+
 	}
+
 	public void rotate() {
-		
-			
-		
-		//System.out.print("obracam w dooka³o ("+(marioImageView.getTranslateX())+","+(marioImageView.getTranslateY())+")");
-		System.out.println();
 		mainPane.getMouseX();
-		marioImageView.getTransforms().add(Rotate.rotate(angle,50, 50));
+		double spin = angle - angleImage;
+		marioImageView.getTransforms().add(Rotate.rotate(spin, 50, 50));
+		angleImage = angle;
 	}
-	
+
 }
-
-
-
-
-
-
-
-
-
-
